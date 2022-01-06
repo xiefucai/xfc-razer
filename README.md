@@ -1,9 +1,13 @@
-# New Project
+# xfc-razer
 
-> ✨ Bootstrapped with Create Snowpack App (CSA).
+> 1. Tiny implementation for web lock
+> 2. async api for indexedDB
 
-## Available Scripts
 
+## Usage
+``` js
+import LockHolder from './LockHolder';
+```
 ### npm start
 
 Runs the app in the development mode.
