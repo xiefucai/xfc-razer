@@ -28,7 +28,7 @@ declare function LockManagerRequest(
 ): Lock;
 
 interface LockManager {
-  request: LockManagerRequest;
+  request: typeof LockManagerRequest;
   query: () => Promise<LockManagerState>;
 }
 

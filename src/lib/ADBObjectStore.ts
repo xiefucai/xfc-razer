@@ -1,3 +1,4 @@
+/// <reference path="../../types/ADBObjectStore.d.ts" />
 class ADBObjectTranstion {
   tx: IDBTransaction;
   table: string;

@@ -1,3 +1,4 @@
+/// <reference path="../../types/LockHolder.d.ts" />
 // with getLockAndHold and releaseLock member functions.
 import Pubsub from './PubSub';
 
