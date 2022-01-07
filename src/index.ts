@@ -1,48 +1,4 @@
-# xfc-razer
-
-> 1. Tiny implementation for web lock
-> 2. async api for indexedDB
-
-
-## Usage
-### 1. add package to your project
-``` bash
-npm install xfc-razer --save
-```
-or
-``` bash
-yarn add xfc-razer
-```
-### 2. import the class
-####  1. LockHolder
-``` typescript
-import { LockHolder } from 'xfc-razer';
-const locker = new LockHolder();
-
-// subscribe message on lock release
-locker.puber.on('unlocked', () => {
-  console.log('lock has been released');
-});
-
-// lock and hold on page loaded
-locker.lock('test-locker', () => {
-    return new Promise((resolve) => {
-      locker.unlock = resolve;
-    });
-}).catch((err) => {
-    console.error(err);
-});
-
-// release the lock
-document.getElementById('release-btn').addEventListener('click', ()=>{
-    if (locker.unlock) {
-          locker.unlock();
-    }
-}, false);
-```
-#### 2. ADBObjectStore
-``` typescript
-import { ADBObjectStore } from 'xfc-razer';
+import ADBObjectStore from './lib/ADBObjectStore';
 
 interface UsbData {
   VID: number;
@@ -51,7 +7,7 @@ interface UsbData {
   device_name: string;
 }
 
-const start = async() => {
+const start = async () => {
   const database = new ADBObjectStore('usb_devices');
   const db = await database.open({
     version: 1,
@@ -83,8 +39,7 @@ const start = async() => {
       },
     ],
   });
-  
-// add multi records
+
   {
     const transaction = database.choose('usb', 'readwrite');
 
@@ -100,12 +55,47 @@ const start = async() => {
         PID: 379,
         type: 'keyboard',
         device_name: 'Razer Huntsman Tournament Edition',
-      }
+      },
+      {
+        VID: 5426,
+        PID: 479,
+        type: 'keyboard',
+        device_name: 'Razer Huntsman Tournament Edition',
+      },
+      {
+        VID: 5426,
+        PID: 579,
+        type: 'keyboard',
+        device_name: 'Razer Huntsman Tournament Edition',
+      },
+      {
+        VID: 5426,
+        PID: 1000,
+        type: 'keyboard',
+        device_name: 'Razer Huntsman Tournament Edition',
+      },
+      {
+        VID: 6426,
+        PID: 108,
+        type: 'keyboard',
+        device_name: 'Razer Huntsman Tournament Edition',
+      },
+      {
+        VID: 6426,
+        PID: 579,
+        type: 'keyboard',
+        device_name: 'Razer Huntsman Tournament Edition',
+      },
+      {
+        VID: 6426,
+        PID: 888,
+        type: 'keyboard',
+        device_name: 'Razer Huntsman Tournament Edition',
+      },
     ]);
     console.log('results', results);
   }
-  
-// add one record
+
   {
     const transaction = database.choose('usb', 'readwrite');
     const result = await transaction.add<UsbData>({
@@ -117,5 +107,8 @@ const start = async() => {
 
     console.log('result', result);
   }
-}
-```
+};
+
+start().catch((err) => {
+  console.warn('err', err);
+});
