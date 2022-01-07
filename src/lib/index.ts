@@ -1,2 +1,4 @@
-export * from './ADBObjectStore'
-export * from './LockHolder'
+import ADBObjectStore from './ADBObjectStore'
+import LockHolder from './LockHolder'
+
+export { LockHolder, ADBObjectStore }

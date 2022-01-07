@@ -4,7 +4,8 @@
     "types"
   ],
   "compilerOptions": {
-    "module": "esnext",
+    "outDir": "dist",
+    "module": "commonjs",
     "target": "esnext",
     "moduleResolution": "node",
     "jsx": "preserve",

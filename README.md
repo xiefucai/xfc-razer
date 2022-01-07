@@ -5,24 +5,117 @@
 
 
 ## Usage
-``` js
-import LockHolder from './LockHolder';
+### 1. add package to your project
+``` bash
+npm install xfc-razer --save
 ```
-### npm start
+or
+``` bash
+yarn add xfc-razer
+```
+### 2. import the class
+####  1. LockHolder
+``` typescript
+import { LockHolder } from 'xfc-razer';
+const locker = new LockHolder();
 
-Runs the app in the development mode.
-Open http://localhost:8080 to view it in the browser.
+// subscribe message on lock release
+locker.puber.on('unlocked', () => {
+  console.log('lock has been released');
+});
 
-The page will reload if you make edits.
-You will also see any lint errors in the console.
+// lock and hold on page loaded
+locker.lock('test-locker', () => {
+    return new Promise((resolve) => {
+      locker.unlock = resolve;
+    });
+}).catch((err) => {
+    console.error(err);
+});
 
-### npm run build
+// release the lock
+document.getElementById('release-btn').addEventListener('click', ()=>{
+    if (locker.unlock) {
+          locker.unlock();
+    }
+}, false);
+```
+#### 2. ADBObjectStore
+``` typescript
+import { ADBObjectStore } from 'xfc-razer';
 
-Builds a static copy of your site to the `build/` folder.
-Your app is ready to be deployed!
+interface UsbData {
+  VID: number;
+  PID: number;
+  type: string;
+  device_name: string;
+}
 
-**For the best production performance:** Add a build bundler plugin like [@snowpack/plugin-webpack](https://github.com/snowpackjs/snowpack/tree/main/plugins/plugin-webpack) or [snowpack-plugin-rollup-bundle](https://github.com/ParamagicDev/snowpack-plugin-rollup-bundle) to your `snowpack.config.mjs` config file.
+const start = async() => {
+  const database = new ADBObjectStore('usb_devices');
+  const db = await database.open({
+    version: 1,
+    objectStores: [
+      {
+        name: 'usb',
+        keyPath: ['VID', 'PID'],
+        autoIncrement: false,
+        indexes: [
+          {
+            name: 'by_vendor_id',
+            keyPath: 'VID',
+            multiEntry: false,
+            unique: false,
+          },
+          {
+            name: 'by_product_id',
+            keyPath: 'PID',
+            multiEntry: false,
+            unique: false,
+          },
+          {
+            name: 'by_type',
+            keyPath: 'type',
+            multiEntry: false,
+            unique: false,
+          },
+        ],
+      },
+    ],
+  });
+  
+// add multi records
+  {
+    const transaction = database.choose('usb', 'readwrite');
 
-### Q: What about Eject?
+    const results = await transaction.add<UsbData>([
+      {
+        VID: 5426,
+        PID: 201,
+        type: 'mouse',
+        device_name: 'Razer Basilisk Essential',
+      },
+      {
+        VID: 5426,
+        PID: 379,
+        type: 'keyboard',
+        device_name: 'Razer Huntsman Tournament Edition',
+      }
+    ]);
+    console.log('results', results);
+  }
+  
+// add one record
+  {
+    const transaction = database.choose('usb', 'readwrite');
+    const result = await transaction.add<UsbData>({
+      VID: 8899,
+      PID: 777,
+      type: 'mouse aaa',
+      device_name: 'ooxx',
+    });
 
-No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
+    console.log('result', result);
+  }
+}
+```

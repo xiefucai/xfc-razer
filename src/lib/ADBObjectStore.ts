@@ -36,7 +36,7 @@ class ADBObjectTranstion {
   }
 }
 
-export class ADBObjectStore {
+export default class ADBObjectStore {
   db: IDBDatabase | null = null;
   db_name: string = '';
 
