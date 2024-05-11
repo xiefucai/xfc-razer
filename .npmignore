@@ -10,3 +10,4 @@ tsconfig.json
 .prettierrc
 .gitignore
 .npmignore
+.parcel-cache

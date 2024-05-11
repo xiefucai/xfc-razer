@@ -4,11 +4,13 @@
   "author": "xiefucai <laozi12345@126.com>",
   "description": "1. Tiny implementation for web lock\n2. async api for indexedDB",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/lib/index.cjs",
+  "module": "dist/lib/index.js",
+  "source": ["src/index.ts", "src/lib/index.ts"],
   "scripts": {
-    "start": "snowpack dev",
-    "build": "snowpack build",
-    "test": "echo \"This template does not include a test runner by default.\" && exit 1",
+    "watch": "parcel watch",
+    "build": "parcel build",
+    "start": "parcel public/index.html --https",
     "format": "prettier --write \"src/**/*.{ts,js}\"",
     "lint": "prettier --check \"src/**/*.{ts,js}\"",
     "release": "tsc -d src/lib/index.ts --outDir dist --module commonjs"
@@ -24,10 +26,10 @@
   "types": "dist/index.d.ts",
   "dependencies": {},
   "devDependencies": {
-    "@snowpack/plugin-typescript": "^1.2.1",
-    "@types/snowpack-env": "^2.3.3",
+    "@parcel/packager-ts": "2.7.0",
+    "@parcel/transformer-typescript-types": "2.7.0",
+    "parcel": "^2.7.0",
     "prettier": "^2.2.1",
-    "snowpack": "^3.3.7",
     "typescript": "^4.2.4"
   },
   "publishConfig": {

@@ -1,4 +1,4 @@
-import ADBObjectStore from './lib/ADBObjectStore';
+import { ADBObjectStore } from './lib/index';
 
 interface UsbData {
   VID: number;
